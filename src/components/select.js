@@ -114,6 +114,15 @@ const Select = ({ value, options, onChange }) => {
         }
     })
 
+    useEffect (() => {
+        let temp = document.querySelector('body');
+        temp.addEventListener('click', event => {
+            if(isActive) {
+                setIsActive(!isActive)
+            }
+        })
+    })
+
     return (
         <div className="dropdown-container" >
             <div className="dropdown-input">
