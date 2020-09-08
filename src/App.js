@@ -1,32 +1,3 @@
-// import React from 'react';
-// import './App.css';
-// import Funcone from './admin/funcone';
-
-// function App() {
-//   const users = [
-//     {
-//       name: "Karen",
-//       age: 23
-//     },
-//     {
-//       name: "Sona",
-//       lastname: "Zohrabyan",
-//       age: 28,
-//     }
-//   ]
-//   console.log(users[0]);
-//   return (
-//     <div className="App">
-//       <Funcone users={users}/>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-
-
 import React, {useState} from 'react';
 import './App.css';
 import Select from './components/select';
