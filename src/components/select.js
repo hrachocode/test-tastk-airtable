@@ -10,6 +10,7 @@ const Select = ({ value, options, onChange }) => {
     const input = (event) => {
         const content = event.target.value;
         setInputState(content)
+        event.preventDefault();
     }
 
     const apply = (newItem) => {
@@ -20,9 +21,16 @@ const Select = ({ value, options, onChange }) => {
         onChange && onChange(value.filter(i => i !== item))
     }
 
+    const enter = (newItem, event) => {
+        
+        console.log(event.key === "Enter");
+        if(event.key === "Enter") {
+            onChange && onChange([...value, newItem])
+        }
+    }
+
     useEffect (() => {
         document.addEventListener("keydown", event => {
-            // console.log(event.key + ": ", event.keyCode);
             if(isActive && event.keyCode === 27) {
                 setIsActive(!isActive)
             } 
@@ -50,7 +58,6 @@ const Select = ({ value, options, onChange }) => {
                         document.getElementById(`dropdown-item-${i}`).style.backgroundColor = 'black';
                     }
                 }
-                // console.log(count.current);
             }
         })
     })
@@ -86,6 +93,17 @@ const Select = ({ value, options, onChange }) => {
         }
     })
 
+    // useEffect ((newItem) => {
+    //     //13 - enter
+    //     document.addEventListener("keydown", event => {
+    //         console.log(event.keyCode + " : " + event.key);
+    //         console.log(event.key === "Enter");
+    //         if(event.key === "Enter") {
+    //             onChange && onChange([...value, newItem])
+    //         }
+    //     })
+    // })
+    
     useEffect (() => {
         if(isActive) {
             document.getElementById('1').style.display = 'none';
@@ -97,36 +115,30 @@ const Select = ({ value, options, onChange }) => {
     })
 
     return (
-        <div className="dropdown-container">
+        <div className="dropdown-container" >
             <div className="dropdown-input">
                 <div onClick={() => setIsActive(!isActive)} className="arrow-down" id='1'></div>
                 <div onClick={() => setIsActive(!isActive)} className="arrow-up" id='2'></div>
-
+                
                 <div className="dropdown-values">
                     {
                         value.length ? value.map(v => 
-                        <div  className="dropdown-value"> 
-                            {options[v].name} <span onClick={() => remove(v)} key={v.id} className="dropdown-remove">X</span>
-                        </div>)
+                            <div  className="dropdown-value"> 
+                                    {options[v].name} <span onClick={() => remove(v)} key={v.id} className="dropdown-remove">X</span>
+                            </div>)
                         : 
-                        <div onClick={() => setIsActive(!isActive)} className="dropdown-placeholder"> Select ...
-                            <input 
-                                onChange={input}/>
-                        </div>
+                        <div  onClick={() => setIsActive(!isActive)} className="dropdown-placeholder"> Select ... </div>
                     }
                 </div>
+                <input 
+                    onClick={() => setIsActive(!isActive)}
+                    className="input"
+                    onChange={input}/>
             </div>
 
-            {/* <div className={classnames('dropdown-options', {'dropdown-active':isActive})}>
-                {options.filter(i => value.findIndex(v => v === i.id) === -1).map(item => 
-                    <div onClick={() => apply(item.id)} key={item.id} className="dropdown-item">
-                        {item.name}
-                    </div>)}
-            </div> */}
-
             <div className={classnames('dropdown-options', {'dropdown-active':isActive})}>
-                {options.filter(str => str.name.toLowerCase().includes(inputState.toLowerCase())).map(item => 
-                    <div onClick={() => apply(item.id)} key={item.id} className="dropdown-item">
+                {options.filter(str => str.name.toLowerCase().includes(inputState.toLowerCase())).filter(i => value.findIndex(v => v === i.id) === -1).map(item => 
+                    <div onClick={() => apply(item.id)} onKeyPress={() => enter(item.id)} key={item.id} className="dropdown-item">
                         {item.name}
                     </div>)}
             </div>

@@ -71,7 +71,7 @@ body{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin-left: 6px;
+  /* margin-left: 6px; */
   /* cursor: pointer; */
 }
 .dropdown-value{
